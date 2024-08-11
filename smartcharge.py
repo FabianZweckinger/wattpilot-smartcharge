@@ -71,10 +71,11 @@ while True:
                     found_power_level = True
                     break
 
-        if not found_power_level and current_charge_power != 0:
-            set_charge_level(False, 0, wattpilot_connection)
-        elif current_charge_power == 0:
-            print("Charge level remains at 0")
+        if not found_power_level:
+            if current_charge_power != 0:
+                set_charge_level(False, 0, wattpilot_connection)
+            elif current_charge_power == 0:
+                print("Charge level remains at 0")
 
     wattpilot_connection.disconnect()
     time.sleep(checktime)
