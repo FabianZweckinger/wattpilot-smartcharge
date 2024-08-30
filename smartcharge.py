@@ -3,7 +3,7 @@ import requests
 import wattpilot
 
 # Config:
-amis_reader_address = "http://xxx.xxx.xxx.xxx/rest"  # Amis reader for outgoing grid power
+amis_reader_address = "http://192.168.178.99/rest"  # Amis reader for outgoing grid power
 charge_distance_to_0 = 1000  # distance until outgoing grid power reaches 0 Watts in Watts
 checktime = 5  # repeated check time in seconds
 grid_voltage = 230  # grid voltage in Volts
@@ -12,7 +12,10 @@ print("Smartcharge started...")
 
 
 def set_charge_level(charge_with_3_phase, charge_amps, wattpilot_connection):
-    wattpilot_connection.set_psm(charge_with_3_phase)
+    if charge_with_3_phase:
+        wattpilot_connection.set_psm(2)
+    else:
+        wattpilot_connection.set_psm(1)
     wattpilot_connection.set_power(charge_amps)
 
     if charge_with_3_phase:
@@ -37,7 +40,7 @@ while True:
 
 
     # Get wallbox current charge power and mode:
-    wattpilot_connection = wattpilot.Wattpilot("xxx.xxx.xxx.xxx", "xxxxxxxxxxxxx")
+    wattpilot_connection = wattpilot.Wattpilot("192.168.xxx.xxx", "xxxxxxxxxxxxx")
     wattpilot_connection.connect()
     c = 0
     while not wattpilot_connection.connected and c < 10:
